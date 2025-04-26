@@ -1,30 +1,100 @@
-# Modern AI IDM UI
+# AI Download Manager
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+![AI Download Manager Logo](public/logo.png)
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/18u4387-mauedungs-projects/v0-modern-ai-idm-ui)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/Whu47ZUxnHC)
+A next-generation download management system with real-time monitoring, analytics, cloud storage integration, and scheduling capabilities.
 
-## Overview
+## Features
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+- 📊 **Real-time Download Dashboard**: Monitor download speed, progress, remaining time, and errors with visual representations
+- 📈 **Download Analytics**: Track download behavior with charts and statistics for sources, file types, and user demographics
+- ☁️ **Cloud Storage Integration**: Connect with AWS S3, Google Cloud Storage, and Azure Blob Storage for secure file storage and retrieval
+- ⏱️ **Download Scheduler**: Schedule downloads with start/end times, recurring options, and reliable task management
+- 🧵 **Multi-Threaded Downloads**: Split downloads into multiple threads for faster speeds
+- 🔄 **Download Management**: Pause, resume, cancel, and prioritize downloads
+- 🔍 **Search & Filter**: Find and organize downloads by name, source, type, and status
+- 🌙 **Dark Mode**: Modern dark-themed interface for comfortable viewing
 
-## Deployment
+## Screenshots
 
-Your project is live at:
+![Dashboard](public/screenshots/dashboard.png)
+![Analytics](public/screenshots/analytics.png)
+![Cloud Storage](public/screenshots/cloud-storage.png)
+![Scheduler](public/screenshots/scheduler.png)
 
-**[https://vercel.com/18u4387-mauedungs-projects/v0-modern-ai-idm-ui](https://vercel.com/18u4387-mauedungs-projects/v0-modern-ai-idm-ui)**
+## Getting Started
 
-## Build your app
+### Prerequisites
 
-Continue building your app on:
+- Node.js 18.0 or higher
+- npm or yarn package manager
+- PostgreSQL database
 
-**[https://v0.dev/chat/projects/Whu47ZUxnHC](https://v0.dev/chat/projects/Whu47ZUxnHC)**
+### Installation
 
-## How It Works
+1. Clone the repository:
+   \`\`\`bash
+   git clone https://github.com/yourusername/ai-download-manager.git
+   cd ai-download-manager
+   \`\`\`
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+2. Install dependencies:
+   \`\`\`bash
+   npm install
+   # or
+   yarn install
+   \`\`\`
+
+3. Set up environment variables:
+   Create a `.env.local` file with your database connection details and other required variables.
+
+4. Start the development server:
+   \`\`\`bash
+   npm run dev
+   # or
+   yarn dev
+   \`\`\`
+
+5. Open your browser and navigate to `http://localhost:3000`
+
+## Usage
+
+### Dashboard Navigation
+
+The application features a tabbed interface with four main sections:
+
+- **Status Dashboard**: Monitor active and completed downloads
+- **Analytics**: View download statistics and charts
+- **Cloud Storage**: Manage cloud storage connections and file uploads
+- **Scheduler**: Schedule downloads for specific times
+
+### Managing Downloads
+
+- **Start/Pause/Resume**: Control download progress with intuitive controls
+- **Filter by Source**: Filter downloads by source (YouTube, documents, applications, etc.)
+- **Search**: Find specific downloads by name or other attributes
+- **View Details**: See comprehensive information about each download
+
+## Documentation
+
+For detailed documentation, see [PROJECT_DOCUMENTATION.md](PROJECT_DOCUMENTATION.md).
+
+## Contributing
+
+Contributions are welcome! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Built with Next.js and React
+- Styled with Tailwind CSS
+- Charts powered by Recharts
+- Icons provided by Lucide React
+- UI components from shadcn/ui
+
+---
+
+Made with ❤️ by Your Team

@@ -1,0 +1,145 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String         @id @default(cuid())
+  name              String?
+  email             String         @unique
+  emailVerified     DateTime?
+  image             String?
+  password          String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  accounts          Account[]
+  sessions          Session[]
+  downloads         Download[]
+  settings          Settings?
+  conversations     Conversation[]
+  verificationToken VerificationToken?
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  @db.Text
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  token     String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Download {
+  id          String           @id @default(cuid())
+  url         String
+  name        String
+  size        Int              @default(0)
+  progress    Int              @default(0)
+  status      String           @default("queued") // queued, downloading, paused, completed, failed
+  source      String           @default("other") // youtube, tiktok, moviebox, book, app, other
+  type        String?          @default("other") // video, audio, document, application, image, archive, other
+  speed       Float?           // in bytes per second
+  filePath    String?
+  encrypted   Boolean          @default(false)
+  encryptionMethod String?
+  encryptionKey String?
+  cloudSynced Boolean          @default(false)
+  cloudPath   String?
+  metadata    Json?            // Additional metadata like resolution, format, etc.
+  startedAt   DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  completedAt DateTime?
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  threads     DownloadThread[]
+}
+
+model DownloadThread {
+  id         String   @id @default(cuid())
+  downloadId String
+  startByte  Int
+  endByte    Int
+  progress   Float    @default(0)
+  speed      Int?     @default(0)
+  status     String   @default("active")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  download   Download @relation(fields: [downloadId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  maxThreadsPerDownload Int    @default(4)
+  downloadPath       String   @default("~/Downloads")
+  encryptionEnabled  Boolean  @default(false)
+  encryptionMethod   String?  @default("password")
+  encryptionKey      String?
+  cloudSyncEnabled   Boolean  @default(false)
+  cloudProvider      String?
+  cloudFolder        String?
+  theme              String   @default("system") // light, dark, system
+  maxConcurrent      Int      @default(3)
+  autoStartDownloads Boolean  @default(true)
+  notifyOnComplete   Boolean  @default(true)
+  defaultQuality     String   @default("high") // low, medium, high, best
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Conversation {
+  id        String    @id @default(cuid())
+  title     String
+  userId    String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  Message[]
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  content        String
+  role           String       // user, assistant
+  createdAt      DateTime     @default(now())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+}
