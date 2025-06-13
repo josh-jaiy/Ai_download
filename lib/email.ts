@@ -34,3 +34,36 @@ export async function sendVerificationEmail(email: string, token: string) {
     return { success: false, error }
   }
 }
+
+export async function sendPasswordResetEmail(email: string, token: string) {
+  const resetUrl = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: "AI Download Manager <noreply@aidownloadmanager.com>",
+      to: email,
+      subject: "Reset your password",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #10b981;">Reset your password</h2>
+          <p>You requested to reset your password. Please click the button below to set a new password:</p>
+          <a href="${resetUrl}" style="display: inline-block; background-color: #10b981; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 20px 0;">Reset Password</a>
+          <p>Or copy and paste this link into your browser:</p>
+          <p>${resetUrl}</p>
+          <p>This link will expire in 1 hour.</p>
+          <p>If you did not request a password reset, you can safely ignore this email.</p>
+        </div>
+      `,
+    })
+
+    if (error) {
+      console.error("Error sending password reset email:", error)
+      return { success: false, error }
+    }
+
+    return { success: true, data }
+  } catch (error) {
+    console.error("Error sending password reset email:", error)
+    return { success: false, error }
+  }
+}

@@ -9,6 +9,16 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-}
+  webpack: (config, { isServer }) => {
+    // This is to handle the bcrypt issue
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        crypto: false,
+      };
+    }
+    return config;
+  },
+};
 
-export default nextConfig
+export default nextConfig;

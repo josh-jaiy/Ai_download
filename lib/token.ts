@@ -29,3 +29,34 @@ export function createVerificationToken(email: string): {
     expires,
   }
 }
+
+// Create a password reset token with expiry
+export function createResetToken(email: string): {
+  token: string
+  hashedToken: string
+  expires: Date
+} {
+  const token = generateToken()
+  const hashedToken = hashToken(token)
+
+  // Reset token expires in 1 hour
+  const expires = new Date()
+  expires.setHours(expires.getHours() + 1)
+
+  return {
+    token,
+    hashedToken,
+    expires,
+  }
+}
+
+// Verify if a reset token is valid and not expired
+export function verifyResetToken(token: string, hashedToken: string, expires: Date): boolean {
+  // Check if token is valid
+  const isValid = hashToken(token) === hashedToken
+
+  // Check if token is expired
+  const isExpired = new Date() > expires
+
+  return isValid && !isExpired
+}
